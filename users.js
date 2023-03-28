@@ -38,4 +38,12 @@ users.put('/:id', async (req, res) => {
     } catch (e) { res.sendStatus(403) }
 })
 
+users.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const { rows } = await pool.query('DELETE FROM users WHERE id=$1', [id]);
+        res.json({ message: `user with Id ${id} deleted.` })
+    } catch (e) { res.sendStatus(403) }
+})
+
 module.exports = users;
