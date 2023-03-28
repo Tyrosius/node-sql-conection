@@ -12,4 +12,12 @@ orders.get('/', async (req, res) => {
     }
 })
 
+orders.get('/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const { rows } = await pool.query('SELECT * FROM orders WHERE id=$1', [id])
+        res.json({ data: rows })
+    } catch (e) { res.sendStatus(404) }
+})
+
 module.exports = orders;
