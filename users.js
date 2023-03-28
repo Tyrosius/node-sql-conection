@@ -62,6 +62,18 @@ users.put('/:id',
         } catch (e) { res.sendStatus(403) }
     })
 
+users.put('/:id/check-inactive', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const { rows } = await pool.query('SELECT * FROM orders WHERE user_id=$1', [id])
+        if (rows.length < 1) {
+            const { newRows } = await pool.query('UPDATE users SET active=$1 WHERE id=$2', [false, id]);
+            res.json({ message: `The user with id ${id} is set to inactive.` })
+        } else { res.json({ messsage: `The user with id ${id} has already ordered at least once.` }) }
+
+    } catch (e) { res.sendStatus(404) }
+})
+
 users.delete('/:id', async (req, res) => {
     const { id } = req.params;
     try {
