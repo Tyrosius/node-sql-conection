@@ -21,6 +21,14 @@ users.get('/:id', async (req, res) => {
     } catch (e) { res.sendStatus(404) }
 })
 
+users.get('/:id/orders', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const { rows } = await pool.query('SELECT * FROM orders WHERE user_id=$1', [id])
+        res.json({ data: rows })
+    } catch (e) { res.sendStatus(404) }
+})
+
 users.post('/',
     body('first_name').isLength({ min: 3, max: undefined }),
     body('last_name').isLength({ min: 3, max: undefined }),
