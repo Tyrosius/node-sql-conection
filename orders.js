@@ -28,4 +28,14 @@ orders.post('/', async (req, res) => {
     } catch (e) { res.sendStatus(403) }
 })
 
+orders.put('/:id', async (req, res) => {
+    const { id } = req.params;
+    /* TODO check for data to be changed */
+    const { price } = req.body;
+    try {
+        const { rows } = await pool.query('UPDATE orders SET price=$1 WHERE id=$2 RETURNING *', [price, id]);
+        res.json({ data: rows })
+    } catch (e) { res.sendStatus(403) }
+})
+
 module.exports = orders;
