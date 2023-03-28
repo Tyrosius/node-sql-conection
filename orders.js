@@ -20,4 +20,12 @@ orders.get('/:id', async (req, res) => {
     } catch (e) { res.sendStatus(404) }
 })
 
+orders.post('/', async (req, res) => {
+    const { price, date, user_id } = req.body;
+    try {
+        const { rows } = await pool.query('INSERT INTO orders (price, date, user_id) VALUES ($1, $2, $3) RETURNING *', [price, date, user_id]);
+        res.json({ data: rows })
+    } catch (e) { res.sendStatus(403) }
+})
+
 module.exports = orders;
