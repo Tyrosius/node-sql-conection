@@ -28,4 +28,14 @@ users.post('/', async (req, res) => {
     } catch (e) { res.sendStatus(403) }
 })
 
+users.put('/:id', async (req, res) => {
+    const { id } = req.params;
+    /* TODO check for data to be changed */
+    const { first_name } = req.body;
+    try {
+        const { rows } = await pool.query('UPDATE users SET first_name=$1 WHERE id=$2 RETURNING *', [first_name, id]);
+        res.json({ data: rows })
+    } catch (e) { res.sendStatus(403) }
+})
+
 module.exports = users;
