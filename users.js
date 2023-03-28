@@ -10,8 +10,6 @@ users.get('/', async (req, res) => {
     } catch (e) {
         res.sendStatus(404)
     }
-
-
 })
 
 module.exports = users;
