@@ -38,4 +38,12 @@ orders.put('/:id', async (req, res) => {
     } catch (e) { res.sendStatus(403) }
 })
 
+orders.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const { rows } = await pool.query('DELETE FROM orders WHERE id=$1', [id]);
+        res.json({ message: `order with Id ${id} deleted.` })
+    } catch (e) { res.sendStatus(403) }
+})
+
 module.exports = orders;
