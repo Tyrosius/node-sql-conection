@@ -20,4 +20,12 @@ users.get('/:id', async (req, res) => {
     } catch (e) { res.sendStatus(404) }
 })
 
+users.post('/', async (req, res) => {
+    const { first_name, last_name, age, active } = req.body;
+    try {
+        const { rows } = await pool.query('INSERT INTO users (first_name, last_name,age,active) VALUES ($1,$2,$3,$4) RETURNING *', [first_name, last_name, age, active]);
+        res.json({ data: rows })
+    } catch (e) { res.sendStatus(403) }
+})
+
 module.exports = users;
